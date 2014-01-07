@@ -1,8 +1,8 @@
 ---
 layout: post
-title: 在linux下saltstack的安装与配置
+title: saltstack运维自动化的安装与简单配置
 keywords: linux,tech
-description: 在linux下saltstack的安装与配置
+description: saltstack运维自动化的安装与简单配置
 categories: [tech, sa]
 tags: [linux, tech, salt]
 group: archive
@@ -38,22 +38,25 @@ yum install salt-minion -y #客户端
 <p class="paragraph">
 ubuntu下的安装:</p>
 
-<pre><code>13.04的软件源收录有salt，版本比较老0.12.0版本。但是13.04以下的版本并没有收录，需要添加PPA源
+{% highlight sh %}
+13.04的软件源收录有salt，版本比较老0.12.0版本。但是13.04以下的版本并没有收录，需要添加PPA源
 sudo apt-get install salt-master #服务端
 sudo apt-get install salt-minion #客户端
-</code></pre>
+{% endhighlight %}
 
 <p class="paragraph">
 13.04以下的版本，需要手工添加ppa源，才可以用包管理器安装saltstack:</p>
 
-<pre><code>sudo apt-get install python-software-properties
+{% highlight sh %}
+
+sudo apt-get install python-software-properties
 echo deb http://ppa.launchpad.net/saltstack/salt/ubuntu `lsb_release -sc` main | sudo tee    
 /etc/apt/sources.list.d/saltstack.list
 wget -q -O- "http://keyserver.ubuntu.com:11371/pks/lookup?op=get&amp;search=0x4759FA960E27C0A6" |sudo apt-key add -
 sudo apt-get update
 sudo apt-get install salt-master
 sudo apt-get install salt-minion
-</code></pre>
+{% endhighlight %}
 
 <hr><div class="se-section-delimiter"></div>
 
@@ -62,17 +65,20 @@ sudo apt-get install salt-minion
 <p class="paragraph">
 server端的配置：vim /etc/salt/master (master的配置文件时默认在这条目录下面的)</p>
 
-<pre><code>user: root
+{% highlight sh %}
+user: root
 auto_accept: True #自动接收minion端的key并验证
 /etc/init.d/salt-master restart 
-</code></pre>
+{% endhighlight %}
 
 <p class="paragraph">
 minion端的配置: vim /etc/salt/minion (minion配置文件的默认路径)</p>
 
-<pre><code>master: salt (这里填写的是服务端的hostname，我的server名字就是salt)
+{% highlight sh %}
+master: salt (这里填写的是服务端的hostname，我的server名字就是salt)
 /etc/init.d/salt-minion restart 
-</code></pre>
+
+{% endhighlight %}
 
 <p>salt minion和master的认证过程：</p>
 
@@ -81,30 +87,33 @@ master在接收到minion的public key后，通过salt-key命令accept minion pub
 
 <p>来到master端:</p>
 
-<pre><code>#salt-key -L # 验证minion的key是否接收
+{% highlight sh %}
+#salt-key -L # 验证minion的key是否接收
 Accepted Keys:
 sa10-007
 Unaccepted Keys:
 Rejected Keys:
-</code></pre>
+{% endhighlight %}
 
 <p>可以发现，是正常接收到minion端(sa10-007)的key；这里的自动接收起源于上文提到的auto_accept: True这个参数，这个参数开启，表示只要有minion起来就会自动被salt的server端所接收</p>
 
 <p>salt-key的基本命令：</p>
+{% highlight sh %}
 
-<pre><code>salt-key -L #检测当前server端所有minion端key的情况，三种：接收、等待接收和拒绝
+salt-key -L #检测当前server端所有minion端key的情况，三种：接收、等待接收和拒绝
 salt-key -a hostname #指定接收某台minion的key
 salt-key -A #接收Unaccepted Keys下所有的minion
 salt-key -d hostname #删除已经接收的机器中指定机器minion key (Accepted Keys:)
 salt-key -D #删除已经接收的所有机器(Accepted Keys:)
-</code></pre>
+{% endhighlight %}
 
 <p>验证server和minion的通信（server端进行）：</p>
 
-<pre><code>#salt '*' test.ping
+{% highlight sh %}
+#salt '*' test.ping
 sa10-007:
  True
-</code></pre>
+{% endhighlight %}
 
 <p>可以发现，server端和minion端是可以正常通信的，至此，saltstack的master和minion正常安装以及配置完成 <br>
 ，后续 将整理salt的基本使用</p>
