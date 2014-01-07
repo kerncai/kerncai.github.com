@@ -209,18 +209,17 @@ error: MySQL library not found
 
 {% highlight sh %}
 
-``内为反方向，直接引号markdown无法在页面渲染
-  server `}`
+  server {
      listen       80;      监听的80端口
      server_name  www.kerncai.com;   (这里需要在你本机的hosts内绑定IP，才可以页面端域名访问 )
      index  index.php;
      root  /etc/zabbix/;  上面的步骤cp进来的东西    
 
-     location / `}`
+     location / }
          try_files $uri $uri/ index.php;
          }
 
-     location ~ \.php$  `}`
+     location ~ \.php$  {
          fastcgi_pass  127.0.0.1:9000;
          fastcgi_index index.php;
          fastcgi_param  SCRIPT_FILENAME  $document_root$fastcgi_script_name;
@@ -237,4 +236,6 @@ error: MySQL library not found
 默认账号密码：
 admin
 zabbix
+
+更多关于zabbix监控nginx、squid、php-fpm、memcache等状态的脚本和模板在我的github上面. 若要访问请点击<a href=https://github.com/kerncai/zabbix>zabbix模板<a>
 </p>
