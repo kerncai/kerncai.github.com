@@ -1,4 +1,15 @@
-<p>{% include codepiano/setup %}</p>
+---
+layout: post
+title: saltmaster配置文件选项说明
+keywords: linux,tech
+description: saltmaster配置文件选项说明
+categories: [tech, sa]
+tags: [linux, tech, salt]
+group: archive
+icon: globe
+---
+
+{% include codepiano/setup %}
 
 <p>原文出处:<a href="http://blog.coocla.org/301.html">http://blog.coocla.org/301.html</a></p>
 
@@ -48,8 +59,7 @@ worker_threads
 worker_threads: 5
 {% endhighlight %}
 
-<p>ret_port</p>
-<p>默认值：4506</p>
+<p>ret_port 默认值：4506</p>
 <p>这个端口是master用来发送命令或者接收minions的命令执行返回信息</p>
 {% highlight sh %}
 ret_port: 4506
@@ -65,8 +75,7 @@ ret_port: 4506
 pidfile: /var/run/salt-master.pid
 {% endhighlight %}
 
-<p>root_dir</p>
-<p>默认值：/</p>
+<p>root_dir 默认值：/</p>
 <p>指定该目录为salt运行的根目录，改变它可以使salt从另外一个目录开始运行，好比chroot</p>
 <p>root_dir: /</p>
 <p>pki_dir</p>
