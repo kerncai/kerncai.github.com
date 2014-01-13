@@ -42,13 +42,13 @@ base:
 
 {% highlight sh %}
 ############IDC################
-{% if grains['ip_interfaces'].get('eth0')[0].startswith('10.10') %}
+{#%# if grains['ip_interfaces'].get('eth0')[0].startswith('10.10') #%#}
 nameservers: ['10.10.9.31','10.10.9.135']
 zabbixserver: ['10.10.9.234']
-{% else %}
+{#% else %#}
 nameservers: ['10.20.9.75']
 zabbixserver: ['10.20.9.234']
-{% endif %}
+{#% endif #%#}
 
 ######## nginx ########
 ngx_home_dir: /var/cache/nginx
