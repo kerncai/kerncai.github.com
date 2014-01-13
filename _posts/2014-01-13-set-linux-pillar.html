@@ -86,7 +86,7 @@ nginx:
 
 {% highlight sh %}
 user nginx;
-{% if grains['num_cpus'] &lt; 8 %}
+{% if grains['num_cpus'] < 8 %}
 worker_processes {{ grains['num_cpus'] }};
 {% else %}
 worker_processes 8;
