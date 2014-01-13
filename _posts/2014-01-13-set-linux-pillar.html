@@ -84,7 +84,7 @@ nginx:
 
 <p>在pillar内可以提前将不同的部分根据在pillar内定义好，这样统一配置的时候就可以实现根据机器实际情况配置；比如根据机器的硬件情况配置nginx的worker_processes:</p>
 
-{% highlight sh %}
+<code><pre>
 user nginx;
 {% if grains['num_cpus'] < 8 %}
 worker_processes {{ grains['num_cpus'] }};
@@ -93,6 +93,5 @@ worker_processes 8;
 {% endif %}
 worker_rlimit_nofile 65535;
 ``````````具体配置省略
-{% endhighlight %}
-
+</pre></code>
 <p>很多定义的时候，都可以使用到pillar来进行自定义相关数据，具体情况可以自行摸索，这里只是个举例。</p>
