@@ -41,14 +41,14 @@ base:
 <p>pillar.sls文件：</p>
 
 {% highlight sh %}
-############IDC################
-{#%# if grains['ip_interfaces'].get('eth0')[0].startswith('10.10') #%#}
+############IDC###############下面的#要去掉
+{#% if grains['ip_interfaces'].get('eth0')[0].startswith('10.10') %#}
 nameservers: ['10.10.9.31','10.10.9.135']
 zabbixserver: ['10.10.9.234']
 {#% else %#}
 nameservers: ['10.20.9.75']
 zabbixserver: ['10.20.9.234']
-{#% endif #%#}
+{#% endif %#}
 
 ######## nginx ########
 ngx_home_dir: /var/cache/nginx
@@ -84,14 +84,15 @@ nginx:
 
 <p>在pillar内可以提前将不同的部分根据在pillar内定义好，这样统一配置的时候就可以实现根据机器实际情况配置；比如根据机器的硬件情况配置nginx的worker_processes:</p>
 
-<code><pre>
+下面的#要去掉，只是为了渲染需要
+{% highlight sh %}
 user nginx;
-{% if grains['num_cpus'] < 8 %}
+{#% if grains['num_cpus'] < 8 %#}
 worker_processes {{ grains['num_cpus'] }};
-{% else %}
+{#% else %#}
 worker_processes 8;
-{% endif %}
+{#% endif %#}
 worker_rlimit_nofile 65535;
 ``````````具体配置省略
-</pre></code>
+{% endhighlight %}
 <p>很多定义的时候，都可以使用到pillar来进行自定义相关数据，具体情况可以自行摸索，这里只是个举例。</p>
