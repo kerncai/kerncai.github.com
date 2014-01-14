@@ -44,7 +44,7 @@ squid:
     - name: ajk-squid #我自己打的rpm包
     - installed
   user.present:    #检测用户，如果没有就创建 squid用户，设置为nologin状态
-  - home: 1{{ pillar[&#39;squid_home_dir&#39;] }}2
+  - home: { { pillar['squid_home_dir'] }}
   - shell: /sbin/nologin
   - require:
     - group: squid
@@ -58,8 +58,8 @@ squid:
     - require:
       - file: /etc/init.d/squid      #squid的启动脚本，也是打包在安装包内的，检测下面的watch内的服务，有变化就执行
     - watch:
-      - file: { { pillar[&#39;squid_conf_dir&#39;] } }/squid.conf
-      { { pillar[&#39;squid_conf_dir&#39;] } }/squid.conf:
+      - file: { { pillar['squid_conf_dir'] }}/squid.conf
+      { { pillar['squid_conf_dir'] }}/squid.conf:
 
  file.managed:
     - source: salt://files/squid/squid.conf # 定义salt内的squid.conf配置文件
@@ -70,7 +70,7 @@ squid:
       - pkg: ajk-squid  #依赖关系
 {% endhighlight %}
 
-<p>{ { pillar[&#39;squid_home_dir&#39;] } } 这里在pillar内定义好的，我是为了美观方便；之前填写下面的目录也是可以的</p>
+<p>{ { pillar[squid_home_dir] }} 这里在pillar内定义好的，我是为了美观方便；之前填写下面的目录也是可以的</p>
 
 {% highlight sh %}
 squid_home_dir: /usr/local/squid-2.7
