@@ -165,11 +165,11 @@ vim squid.conf</p>
 {#% if grains['ip_interfaces'].get('eth0')[0].startswith('10.20') %#} (#去掉)
 ...........省略具体配置
 ## MEMORY CACHE OPTIONS
-cache_mem {{ grains['cache_mem_size'] }} GB #内存的大小
+cache_mem {{# grains['cache_mem_size'] }} GB #内存的大小
 ## DISK CACHE OPTIONS
-cache_dir aufs /cache1 {{ grains['cache_disk_size'] }} 16 256 #cache的大小
-cache_dir aufs /cache2 {{ grains['cache_disk_size'] }} 16 256
-cache_dir aufs /cache3 {{ grains['cache_disk_size'] }} 16 256
+cache_dir aufs /cache1 {{# grains['cache_disk_size'] }} 16 256 #cache的大小
+cache_dir aufs /cache2 {{# grains['cache_disk_size'] }} 16 256
+cache_dir aufs /cache3 {{# grains['cache_disk_size'] }} 16 256
 visible_hostname {{ grains['host'] }} #机器名
 {#% else %#} (#去掉)
   缓存js等的配置文件，此处省略
