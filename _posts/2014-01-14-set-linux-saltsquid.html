@@ -171,9 +171,9 @@ cache_dir aufs /cache1 { { grains['cache_disk_size'] }} 16 256 #cache的大小
 cache_dir aufs /cache2 { { grains['cache_disk_size'] }} 16 256
 cache_dir aufs /cache3 { { grains['cache_disk_size'] }} 16 256
 visible_hostname{ { grains['host'] }} #机器名
-{#% else %#} (#去掉)
+{ % else %} (#去掉)
   缓存js等的配置文件，此处省略
-{#% endif %#}(#去掉)
+{ % endif %}(#去掉)
 {% endhighlight %}
 
 <p>这里只是说明下salt需要配置的东西，至于squid具体的配置文件，这里就不多说了 <br>
