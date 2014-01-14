@@ -162,7 +162,7 @@ cdn20-001:
 vim squid.conf</p>
 
 {% highlight sh %}
-{#% if grains['ip_interfaces'].get('eth0')[0].startswith('10.20') %#} (#去掉)
+{ % if grains['ip_interfaces'].get('eth0')[0].startswith('10.20') %} 
 ...........省略具体配置
 ## MEMORY CACHE OPTIONS
 cache_mem { { grains['cache_mem_size'] }} GB #内存的大小
