@@ -44,7 +44,7 @@ squid:
     - name: ajk-squid #我自己打的rpm包
     - installed
   user.present:    #检测用户，如果没有就创建 squid用户，设置为nologin状态
-  - home: {\{ pillar['squid_home_dir'] }}
+  - home: {&nbsp;{ pillar['squid_home_dir'] }}
   - shell: /sbin/nologin
   - require:
     - group: squid
