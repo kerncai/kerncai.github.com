@@ -1,0 +1,183 @@
+---
+layout: post
+title: nginx各个模块用法说明（一）
+keywords: linux,tech
+description:  nginx各个模块用法说明（一）
+categories: [tech, sa]
+tags: [linux, tech, nginx]
+group: archive
+icon: globe
+---
+{% include codepiano/setup %}
+
+
+<p>nginx 编译的时候，查找模块非常简单，/configure --help即可读取出所有模块，当然，是不包含第三方的</p>
+
+<p>--prefix=PATH(一般都是在/usr/local/下)</p>
+
+
+<p>--sbin-path=PATH 设定程序文件目录 如果不指定，默认为上面的PATH总路径的下</p>
+
+
+<p>--conf-path=PATH 设定配置文件(nginx.conf)目录，我之前习惯指定为/etc/nginx/nginx.conf； 不指定的话默认为PATH总路径</p>
+
+<p>--http-log-path=PATH 设置access log文件路径</p>
+
+
+<p>--error-log-path=PATH 设定错误日志目录，这个最好指定下，方便排错，习惯放到/data/logs/nginx/下面</p>
+
+
+<p>--pid-path=PATH 设定pid文件(nginx.pid)目录，看个人习惯，我一般不指定，使用默认</p>
+
+
+<p>--lock-path=PATH 设定lock文件(nginx.lock)目录，一般默认到主路径下面</p>
+
+
+<p>--user=USER 设定程序运行的用户环境，一般习惯用nginx</p>
+
+
+
+<p>--group=GROUP 设定程序运行的组环境，习惯用nginx；创建用户和组的时候，最好给个nologin的属性，安全起见</p>
+
+
+<p>--builddir=DIR 设定程序编译目录，一般默认，不指定</p>
+
+
+<p>--with-select_module 允许select模块(一种轮询模式,不推荐用在高载环境)</p>
+
+
+<p>--without-select_module 不使用select模块，和上面的用法不能同时存在，默认即为加载</p>
+
+
+<p>--with-poll_module 允许poll模块(一种轮询模式,不推荐用在高载环境)；标准链接模式，默认下为自动编译加载</p>
+
+
+<p>--without-poll_module 不使用poll模块</p>
+
+
+<p>--with-http_ssl_module 允许ngx_http_ssl_module模块(Apache对应:mod_ssl) 这个模块建议必打，谁家的网站还没个https的东西</p>
+
+
+<p>--with-http_realip_module 允许ngx_http_realip_module模块(mod_rpaf)，此模块支持显示真实来源IP地址，主要用于NGINX做前端负载均衡服务器使用；建议编译的时候加进去，挺好用的</p>
+
+<p>--with-http_addition_module 允许ngx_http_addition_module模块(mod_layout)，游戏服务器不必安装，门户网站（电商）可以安装，有利于被搜索引擎收录页面信息。</p>
+
+
+<p>--with-http_xslt_module 允许ngx_http_xslt_module模块，这个模块是一个过滤器，它可以通过XSLT模板转换XML应答。0.7.8后面版本才可以使用，具体没用过···</p>
+
+
+<p>--with-http_sub_module 允许ngx_http_sub_module模块，这个模块可以能够在nginx的应答中搜索并替换文本。</p>
+
+
+<p>--with-http_dav_module 允许ngx_http_dav_module模块(mod_dav)，为文件和目录指定权限，限制不同类型的用户对于页面有不同的操作权限</p>
+
+
+<p>--with-http_flv_module 允许ngx_http_flv_module模块(mod_flvx)，这个模块支持对FLV（flash）文件的拖动播放。具体看需求，如果用不到，没必要</p>
+
+
+<p>--with-http_gzip_static_module 允许ngx_http_gzip_static_module模块(mod_dflate)，这个模块在一个预压缩文件传送到开启Gzip压缩的客户端之前检查是否已经存在以“.gz”结尾的压缩文件，这样可以防止文件被重复压缩。</p>
+
+
+<p>--with-http_random_index_module 允许ngx_http_random_index_module模块(mod_autoindex)，从目录中选择一个随机主页，一般用不到，至少我没用过</p>
+
+
+<p>--with-http_stub_status_module 允许ngx_http_stub_status_module模块(mod_status)，建议加进去，好东西，可以实时看到nginx的处理状态，特别是可以结合zabbix做监控，非常不错</p>
+
+
+<p>--without-http_charset_module 不使用ngx_http_charset_module模块；这个模块将在应答头中为"Content-Type"字段添加字符编码</p>
+
+
+<p>--without-http_gzip_module 不使用ngx_http_gzip_module模块，文件压缩模式，经常用到</p>
+
+
+<p>--without-http_ssi_module 不使用ngx_http_ssi_module模块，此模块处理服务器端包含文件(ssi)的处理.上家公司就用到了</p>
+
+
+<p>--without-http_userid_module 不使用ngx_http_userid_module模块</p>
+
+
+<p>--without-http_access_module 不使用ngx_http_access_module模块</p>
+
+
+<p>--without-http_auth_basic_module 不使用ngx_http_auth_basic_module模块</p>
+
+
+<p>--without-http_autoindex_module 不使用ngx_http_autoindex_module模块</p>
+
+
+<p>--without-http_geo_module 不使用ngx_http_geo_module模块;这个模块基于客户端的IP地址创建一些ngx_http_geoip_module变量，并与MaxMindGeoIP文件进行匹配，该模块仅用于0.7.63和0.8.6版本之后。但效果不太理想，对于城市的IP记录并不是特别准确，不过对于网站的来源访问区域的分析大致有一定参考性,结合maptail做效果图很不错</p>
+
+
+<p>--without-http_map_module 不使用ngx_http_map_module模块，这个模块允许你分类或者同时映射多个值到多个不同值并储存到一个变量中，可用于页面跳转其他域名使用。</p>
+
+
+<p>--without-http_referer_module 不使用ngx_http_referer_module模块
+当一个请求头的Referer字段中包含一些非正确的字段，这个模块可以禁止这个请求访问站点。可以禁止盗链的情况发生。</p>
+
+
+<p>--without-http_rewrite_module 不使用ngx_http_rewrite_module模块，跳转模块，支撑nginx的rewrite规则，果断要用啊 </p>
+
+
+<p>--without-http_proxy_module 不使用ngx_http_proxy_module模块，代理模块，做负载均衡的必须</p>
+
+
+<p>--without-http_fastcgi_module 不使用ngx_http_fastcgi_module模块</p>
+
+
+<p>--without-http_memcached_module 不使用ngx_http_memcached_module模块</p>
+
+
+<p>--without-http_limit_zone_module 不使用ngx_http_limit_zone_module模块，非常好的模块，特别是面临被抓数据的时候</p>
+
+
+<p>--without-http_empty_gif_module 不使用ngx_http_empty_gif_module模块 用的不多，具体作用不太清楚</p>
+
+
+<p>--without-http_browser_module 不使用ngx_http_browser_module模块，识别客户端浏览器版本来制定计划。可以实现更加来源浏览器的版本访问不同页面的效果。</p>
+
+
+<p>--without-http_upstream_ip_hash_module，不使用ngx_http_upstream_ip_hash_module模块 闲的蛋疼才不会用这个模块</p>
+
+
+<p>--with-http_perl_module 允许ngx_http_perl_module模块，这个模块允许nginx使用SSI调用perl或直接执行perl </p>
+
+<p>--with-perl_modules_path=PATH 设置perl模块路径</p>
+
+
+<p>--with-perl=PATH 设置perl库文件路径</p>
+
+
+<p>--http-client-body-temp-path=PATH 设置客户端请求临时文件路径,nginx 做缓存</p>
+
+
+<p>--http-proxy-temp-path=PATH 设置http proxy临时文件路径</p>
+
+
+<p>--http-fastcgi-temp-path=PATH 设置http fastcgi临时文件路径</p>
+
+
+<p>--without-http 不使用HTTP server功能，如果只是做代理服务器，可以不提供http服务</p>
+
+
+<p>--with-mail 允许POP3/IMAP4/SMTP代理模块</p>
+
+
+<p>--with-google_perftools_module 允许ngx_google_perftools_module模块(调试用)，这个模块可以启用google性能分析工具套件</p>
+
+
+<p>--add-module=PATH 允许使用外部模块,以及路径</p>
+
+
+<p>--with-pcre=DIR 设定PCRE库路径</p>
+
+
+<p>--with-zlib=DIR 设定zlib库文件路径</p>
+
+
+<p>--with-openssl=DIR 设定OpenSSL库文件路径；前段时间爆发出来的心脏出血漏洞：Openssl作为一个基于密码学的安全开发包，OpenSSL提供的功能相当强大和全面，囊括了主要的密码算法、常用的密钥和证书封装管理功能以及SSL协议，并提供了丰富的应用程序供测试或其它目的使用。</p>
+
+
+<p>--with-debug 允许调试日志，我一般会开启</p>
+
+
+{% endhighlight %}
