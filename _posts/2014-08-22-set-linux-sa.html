@@ -1,0 +1,37 @@
+---
+layout: post
+title: bash下TAB键补全忽略大小写(玩转bash<一>)
+keywords: linux,tech
+description:  bash下TAB键补全忽略大小写(玩转bash<一>)
+categories: [tech, sa]
+tags: [linux, tech, sa]
+group: archive
+icon: globe
+---
+{% include codepiano/setup %}
+
+
+<p>编辑~/.inputrc（没有的话，就新建一个），在最后加一行： </p>
+
+{% highlight sh %}
+set completion-ignore-case on
+{% endhighlight %}
+
+<p>保存，重新打开终端即可。这样，TAB键补全的时候，就会忽略大小写了，非常方便快捷</p>
+
+<p>用方向键Up，Down来搜索以该串字符开头的历史命令。</p>
+
+<p>在~/.inputrc下面添加</p>
+{% highlight sh %}
+“\e[A”: history-search-backward
+“\e[B”: history-search-forward 
+{% endhighlight %}
+
+<p>或者在~/.bashrc中加入：</p>
+
+{% highlight sh %}
+bind '"\e[A": history-search-backward' 
+
+bind '"\e[B": history-search-forward'
+{% endhighlight %}
+<p>比如，bash下 输入d，然后上下键，就会匹配出d相关的命令了
